@@ -1,3 +1,2 @@
 #!/bin/bash
-cwd=$(ls)
-echo ":$cwd"
+echo ":$(ls)"
