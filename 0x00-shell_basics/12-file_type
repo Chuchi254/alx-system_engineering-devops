@@ -1,2 +1,2 @@
 #!/bin/bash
-file -b /tmp/iamafile: /tmp/iamafile
+file -b /tmp/iamafile | sed "s/^/\/tmp\/iamafile: /"
