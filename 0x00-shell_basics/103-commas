@@ -1,3 +1,2 @@
 #!/bin/bash
 ls -p --group-directories-first --ignore='[^0-9A-Za-z]*' | awk -v ORS=',' '{ print $1 }' | head -c -1
-
