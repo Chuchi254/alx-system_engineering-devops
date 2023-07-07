@@ -1,2 +1,2 @@
 #!/bin/bash
-mv betty my_first_drectory
+mv betty tmp/my_first_drectory
