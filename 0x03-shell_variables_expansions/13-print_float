@@ -1,2 +1,2 @@
 #!/bin/bash
-pintf "%.2f" $NUM | sort
+echo "$(printf "%.2f" "$NUM")"
