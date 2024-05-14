@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Display listening TCP ports
+netstat -tuln | awk '$1 == "tcp" {printf "%-5s %-7s %-7s %-24s %-24s %-11s ", $1, $2, $3, $4, $5, $6; system("lsof -i :" $4" | grep LISTEN | awk '\''{print $2 \"/\" $1}'\''")}' | column -t
+# Display listening UDP ports
+netstat -uln | awk '$1 == "udp" {printf "%-5s %-7s %-7s %-24s %-24s %-11s ", $1, $2, $3, $4, $5, ""; system("lsof -i :" $4" | grep LISTEN | awk '\''{print $2 \"/\" $1}'\''")}' | column -t
+# Display listening UNIX domain sockets
+netstat -x | awk '$1 == "unix" && $5 == "LISTEN" {printf "%-5s %-7s %-11s %-10s %-13s %-8s ", $1, $2, "", $4, $5, $6; system("lsof -U | grep " $8 " | grep LISTEN | awk '\''{print $2 \"/\" $1}'\''")}' | column -t
