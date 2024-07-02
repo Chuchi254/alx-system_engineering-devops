@@ -1,6 +1,6 @@
-#0x04. Loops, conditions and parsing
+# 0x04. Loops, conditions and parsing
 
-##TASKS
+## TASKS
 
 0. Create a SSH RSA key pair
 Read for this task:
