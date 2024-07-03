@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Ensure the /etc/ssh/ssh_config file exists
 file { '/etc/ssh/ssh_config':
 	ensure	=> 'present',
