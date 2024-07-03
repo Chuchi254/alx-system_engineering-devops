@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# This script installs and configures Nginx to server a page containing "Hello World!"
+
+# Update package list and install Nginx
+apt-get update -y
+apt-get install nginx -y
+
+# Ensure Nginx is running
+service nginx start
+
+# Create a custom index.html file that contains "Hello World!"
+echo "Hello World!" > /var/www/html/index.html
+
+# Ensure Nginx is set to restart if the server reboots
+update-rc.d nginx defaults
+
+# Restart Nginx without using systemctl
+service nginx restart
