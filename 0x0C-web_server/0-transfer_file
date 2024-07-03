@@ -9,7 +9,7 @@ fi
 
 # Assigning paramentals to variables
 PATH_TO_FILE=$1
-SERVER_IP=$2
+IP=$2
 USERNAME=$3
 PATH_TO_SSH_KEY=$4
 
@@ -17,10 +17,7 @@ PATH_TO_SSH_KEY=$4
 chmod 600 "$PATH_TO_SSH_KEY"
 
 # Disabbling strict host key checking
-scp -i "$PATH_TO_SSH_KEY" -o StrictHostKeyChecking=no "$PATH_TO_FILE" "$USERNAME@SERVER_IP:~/"
-
-# Checking if the transfer was successful
-if [ $? -eq 0 ]
+if scp -i "$PATH_TO_SSH_KEY" -o StrictHostKeyChecking=no "$PATH_TO_FILE" "$USERNAME@$IP:~/"
 then
 	echo "FILE WAS TRANSFERED SUCCESSFULLY"
 else
