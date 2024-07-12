@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Configures a new ubuntu machine by installing Nginx, setting up a web
+# page to return a "Hello World" string, and configuring a redirection
+# a redirection from /redirect_me to a YouTube video.
+
+echo -e "Updating package lists and installing Nginx...\n"
+sudo apt-get update -y -qq && sudo apt-get install nginx -y
+
+echo -e "\nSetting up configuration...\n"
+
+# Start Nginx service
+sudo systemctl start nginx
+
+# Allow Nginx through the firewall
+sudo ufw allow 'Nginx HTTP'
+
+# Give the user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+# Backup the default index page
+sudo cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+
+# Create a new index page
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
+
+# Configure redirection in Nginx
+sudo sed -i '/^\s*location \/ {/a \\n	# Redirect /redirect_me to Youtube\n	location /redirect_me {\n	return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n	}\n' /etc/nginx/sites-available/default
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
+
+echo -e "\nConfiguration completed successfully.\n"
