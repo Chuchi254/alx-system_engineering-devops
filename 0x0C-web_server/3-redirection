@@ -1,33 +1,36 @@
 #!/usr/bin/env bash
-# Configures a new ubuntu machine by installing Nginx, setting up a web
-# page to return a "Hello World" string, and configuring a redirection
-# a redirection from /redirect_me to a YouTube video.
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World string
+#
 
-echo -e "Updating package lists and installing Nginx...\n"
-sudo apt-get update -y -qq && sudo apt-get install nginx -y
 
-echo -e "\nSetting up configuration...\n"
+echo -e "Updating and installing Nginx.\n"
+sudo apt-get update -y -qq && \
+	         sudo apt-get install nginx -y
 
-# Start Nginx service
-sudo systemctl start nginx
+echo -e "\nSetting up some minor stuff.\n"
 
-# Allow Nginx through the firewall
+# starting nginx service
+sudo service nginx start
+
+# allowing nginx on firewall
 sudo ufw allow 'Nginx HTTP'
 
 # Give the user ownership to website files for easy editing
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
 
-# Backup the default index page
-sudo cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+# Backup default index
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
-# Create a new index page
-echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
+# Creating new index
+echo -e "Hello World!" > /var/www/html/index.nginx-debian.html
 
-# Configure redirection in Nginx
-sudo sed -i '/^\s*location \/ {/a \\n	# Redirect /redirect_me to Youtube\n	location /redirect_me {\n	return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n	}\n' /etc/nginx/sites-available/default
+# Setting up /redirect_me to a youtube video
+sudo sed -i '24i\       rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
 
-# Restart Nginx to apply changes
-sudo systemctl restart nginx
+# Restarting nginx
+sudo service nginx restart
 
-echo -e "\nConfiguration completed successfully.\n"
+echo -e "\nCompleted.\n"
